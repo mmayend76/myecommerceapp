@@ -1,0 +1,124 @@
+# -*- mode: ruby -*- 
+# vi: set ft=ruby : 
+VAGRANTFILE_API_VERSION = "2" 
+Vagrant.configure(VAGRANTFILE_API_VERSION) do|config| 
+    config.ssh.insert_key = false 
+    config.vm.provider :virtualbox do|vb| 
+        vb.customize ["modifyvm", :id, "--memory", "2048"] 
+    end 
+    
+    #Web Server
+    config.vm.define "website-server" do|web| 
+        web.vm.hostname = "website-server" 
+        web.vm.box = "bento/ubuntu-18.04" 
+        web.vm.network "private_network", ip: "192.168.43.14" 
+    end         
+    config.vm.box_check_update = false 
+    config.vbguest.auto_update = false          sleep2
+
+    m_may@DESKTOP-JM9AHTG MINGW64 ~
+    $ touch  myecommerceapp.sh
+    
+
+    #!/bin/bash
+    ## Author: Moses, Email: mmayend76
+    # Date : jun 29 2022
+    # .......Script for a new Vagrantfile in the myecommerceapp folder...
+    
+    if [$? -eq 0]
+    echo1
+    then  "creating our ubuntu virtaul machine"
+     sleep2
+    
+     if [$? -eq 0]
+    
+     echo2
+    then "installing dependencies and the firewall.Naming the host"
+    
+    Local Machine
+    switch to the root user
+    sudo apt-get update && apt-get upgrade
+    udo apt-get -y install python3-pip nginx
+    pip3 install --upgrade pip
+     sleep2
+     if [$? -eq 0]
+     then "we will give the web server a host name and add the IP address"
+     else
+     hostnamectl set-hostname website
+    vi /etc/hosts
+      ::1  localhost ip6-localhost ip6-loopbackff02
+      ff02::1 ip6-allnodes
+      ff02::2 ip6-allrouters
+    sleep2
+    
+    echo3 "Installing the firewall"
+    sudo apt-get install ufw
+    here we allow outgoing traffic
+     sudo ufw default allow outgoing
+     sudo ufw default deny incoming
+     if[$? -eq 0]
+     then "we are enable the rules of the firewall ufw"
+     else
+    here we allow ssh connection
+    here we configure the fire wall to allow port 8000
+    here we are enabling the fire wall
+    sudo ufw enable
+    here we are getting the status of the fire wall to confirm that it is active
+    sudo ufw status
+    
+    To                         Action      From
+    --                         ------      ----
+    22/tcp                     ALLOW       Anywhere
+    8000                       ALLOW       Anywhere
+    22/tcp (v6)                ALLOW       Anywhere (v6)
+    8000 (v6)                  ALLOW       Anywhere (v6)
+    sleep2
+    
+    echo4 "Installing the PostgreSQL database on Ubuntu"
+    sudo apt-get install postgresql postgresql-contrib
+    setting password for user postgres
+     sudo passwd postgres
+     changing to postgres user
+     sudo -u postgres psql
+    
+     if[$?-eq 0]
+     then "On the PostgreSQL terminal, we first create the database for the website and a user,who perform the dabatase querries"
+     else
+    CREATE DATABASE website
+    CREATE USER webuser WITH PASSWORD 'utrainsdb
+    GRANT ALL PRIVILEGES ON website to webuser
+    # \q
+    sleep2
+     "Now we  want to examine the system status of PostgreSQL"
+     sudo service postgresql restart
+      sudo service postgresql status
+      sleep2
+    
+      if[$?-eq 0]
+      then
+            "Clone the website code from GitHub"
+             apt-get -y install git
+             git clone https://github.com/tatahnoellimnyuy/eccommerce.git
+    
+             sleep2
+    
+    if[$? -eq 0]
+    then " the clone is successfully,we will get see the eccommerce folder in the home directory"
+    else
+            "Adding our postgres configurations to the python app "
+    vi eccommerce/demo/settings.py
+    sleep2
+    
+    echo4
+        "Creating a virtual environment to install the python website dependencies"
+        now lets install vitualenv we will use it to create a python virtaul environment
+         pip3 install virtualenv
+          virtualenv eccommerce/venv
+          cd eccommerce
+          source venv/bin/activate
+          pip3 install -r requirements.txt
+    
+     fi
+    
+    
+    
